@@ -8,15 +8,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self.setAcceptDrops(True)
+        
+        self.Log_Lv.SetMainWindow(self)
+        self.Music_Tv.SetMainWindow(self)
+        
         self.show()
         
     # 启用
     def dragEnterEvent(self, e):
-        print(e)
+        # print(e)
         e.accept()
         
     def dropEvent(self, e):
-        print(e)
+        #print(e)
+        pass
     
 def main():
     app = QApplication(sys.argv)

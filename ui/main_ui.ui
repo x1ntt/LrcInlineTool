@@ -39,7 +39,7 @@
       <string>打开音乐文件</string>
      </property>
     </widget>
-    <widget class="QTableView" name="Music_Tv">
+    <widget class="MusicTableView" name="Music_Tv">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -180,7 +180,7 @@
     <property name="title">
      <string>输出</string>
     </property>
-    <widget class="QListView" name="listView">
+    <widget class="LogListView" name="Log_Lv">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -262,12 +262,24 @@
      <x>0</x>
      <y>0</y>
      <width>886</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MusicTableView</class>
+   <extends>QTableView</extends>
+   <header location="global">custom/musictableview</header>
+  </customwidget>
+  <customwidget>
+   <class>LogListView</class>
+   <extends>QListView</extends>
+   <header location="global">custom/loglistview</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
