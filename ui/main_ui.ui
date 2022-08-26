@@ -29,9 +29,9 @@
     <widget class="QPushButton" name="OpenFile_Btn">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>40</x>
        <y>410</y>
-       <width>101</width>
+       <width>81</width>
        <height>24</height>
       </rect>
      </property>
@@ -39,7 +39,7 @@
       <string>打开音乐文件</string>
      </property>
     </widget>
-    <widget class="MusicTableView" name="Music_Tv">
+    <widget class="MusicListWidget" name="musicList">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -47,6 +47,19 @@
        <width>251</width>
        <height>381</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="Remove_Btn">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>410</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>移除文件</string>
      </property>
     </widget>
    </widget>
@@ -270,14 +283,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>MusicTableView</class>
-   <extends>QTableView</extends>
-   <header location="global">custom/musictableview</header>
-  </customwidget>
-  <customwidget>
    <class>LogListWidget</class>
    <extends>QListWidget</extends>
    <header location="global">custom/loglistwidget</header>
+  </customwidget>
+  <customwidget>
+   <class>MusicListWidget</class>
+   <extends>QListWidget</extends>
+   <header location="global">custom/musiclistwidget</header>
   </customwidget>
  </customwidgets>
  <resources/>

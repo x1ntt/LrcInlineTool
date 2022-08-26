@@ -19,11 +19,14 @@ class Ui_MainWindow(object):
         self.groupBox.setGeometry(QtCore.QRect(10, 10, 271, 441))
         self.groupBox.setObjectName("groupBox")
         self.OpenFile_Btn = QtWidgets.QPushButton(self.groupBox)
-        self.OpenFile_Btn.setGeometry(QtCore.QRect(80, 410, 101, 24))
+        self.OpenFile_Btn.setGeometry(QtCore.QRect(40, 410, 81, 24))
         self.OpenFile_Btn.setObjectName("OpenFile_Btn")
-        self.Music_Tv = MusicTableView(self.groupBox)
-        self.Music_Tv.setGeometry(QtCore.QRect(10, 20, 251, 381))
-        self.Music_Tv.setObjectName("Music_Tv")
+        self.musicList = MusicListWidget(self.groupBox)
+        self.musicList.setGeometry(QtCore.QRect(10, 20, 251, 381))
+        self.musicList.setObjectName("musicList")
+        self.Remove_Btn = QtWidgets.QPushButton(self.groupBox)
+        self.Remove_Btn.setGeometry(QtCore.QRect(150, 410, 81, 23))
+        self.Remove_Btn.setObjectName("Remove_Btn")
         self.groupBox_2 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_2.setGeometry(QtCore.QRect(300, 10, 291, 441))
         self.groupBox_2.setObjectName("groupBox_2")
@@ -93,6 +96,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "Music Tool"))
         self.groupBox.setTitle(_translate("MainWindow", "待处理歌曲"))
         self.OpenFile_Btn.setText(_translate("MainWindow", "打开音乐文件"))
+        self.Remove_Btn.setText(_translate("MainWindow", "移除文件"))
         self.groupBox_2.setTitle(_translate("MainWindow", "歌曲信息"))
         self.groupBox_3.setTitle(_translate("MainWindow", "歌词"))
         self.SearchLRC_Btn.setText(_translate("MainWindow", "搜索"))
@@ -105,4 +109,4 @@ class Ui_MainWindow(object):
         self.Waring_Cb.setText(_translate("MainWindow", "Waring"))
         self.Error_Cb.setText(_translate("MainWindow", "Error"))
 from custom.loglistwidget import LogListWidget
-from custom.musictableview import MusicTableView
+from custom.musiclistwidget import MusicListWidget

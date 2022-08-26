@@ -9,8 +9,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setAcceptDrops(True)
         
+        self.OpenFile_Btn.clicked.connect(self.musicList.addMusic)
+        self.Remove_Btn.clicked.connect(self.musicList.removeMusic)
+        
         self.Log_Lw.SetMainWindow(self)
-        self.Music_Tv.SetMainWindow(self)
+        self.musicList.SetMainWindow(self)
         
         self.show()
         
