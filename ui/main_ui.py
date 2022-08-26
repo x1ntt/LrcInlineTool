@@ -57,9 +57,6 @@ class Ui_MainWindow(object):
         self.groupBox_4 = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_4.setGeometry(QtCore.QRect(10, 460, 861, 181))
         self.groupBox_4.setObjectName("groupBox_4")
-        self.Log_Lv = LogListView(self.groupBox_4)
-        self.Log_Lv.setGeometry(QtCore.QRect(10, 20, 771, 151))
-        self.Log_Lv.setObjectName("Log_Lv")
         self.Debug_Cb = QtWidgets.QCheckBox(self.groupBox_4)
         self.Debug_Cb.setGeometry(QtCore.QRect(790, 130, 61, 20))
         self.Debug_Cb.setChecked(True)
@@ -76,6 +73,9 @@ class Ui_MainWindow(object):
         self.Error_Cb.setGeometry(QtCore.QRect(790, 100, 61, 20))
         self.Error_Cb.setChecked(True)
         self.Error_Cb.setObjectName("Error_Cb")
+        self.Log_Lw = LogListWidget(self.groupBox_4)
+        self.Log_Lw.setGeometry(QtCore.QRect(10, 20, 771, 151))
+        self.Log_Lw.setObjectName("Log_Lw")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 886, 23))
@@ -104,5 +104,5 @@ class Ui_MainWindow(object):
         self.Info_Cb.setText(_translate("MainWindow", "Info"))
         self.Waring_Cb.setText(_translate("MainWindow", "Waring"))
         self.Error_Cb.setText(_translate("MainWindow", "Error"))
-from ui.custom.loglistview import LogListView
-from ui.custom.musictableview import MusicTableView
+from custom.loglistwidget import LogListWidget
+from custom.musictableview import MusicTableView

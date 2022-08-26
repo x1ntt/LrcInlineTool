@@ -9,7 +9,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setAcceptDrops(True)
         
-        self.Log_Lv.SetMainWindow(self)
+        self.Log_Lw.SetMainWindow(self)
         self.Music_Tv.SetMainWindow(self)
         
         self.show()

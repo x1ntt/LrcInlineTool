@@ -180,16 +180,6 @@
     <property name="title">
      <string>输出</string>
     </property>
-    <widget class="LogListView" name="Log_Lv">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>20</y>
-       <width>771</width>
-       <height>151</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QCheckBox" name="Debug_Cb">
      <property name="geometry">
       <rect>
@@ -254,6 +244,16 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="LogListWidget" name="Log_Lw">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>771</width>
+       <height>151</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -275,9 +275,9 @@
    <header location="global">custom/musictableview</header>
   </customwidget>
   <customwidget>
-   <class>LogListView</class>
-   <extends>QListView</extends>
-   <header location="global">custom/loglistview</header>
+   <class>LogListWidget</class>
+   <extends>QListWidget</extends>
+   <header location="global">custom/loglistwidget</header>
   </customwidget>
  </customwidgets>
  <resources/>
