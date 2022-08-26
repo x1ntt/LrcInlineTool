@@ -8,7 +8,7 @@ class LogListWidget(QtWidgets.QListWidget):
     
     def Info(self, log):
         item = QtWidgets.QListWidgetItem(log)
-        item.setBackground(QtGui.QColor(144,238,144))
+        # item.setBackground(QtGui.QColor(144,238,144))
         self.insertItem(0, item)
         
     def Error(self, log):

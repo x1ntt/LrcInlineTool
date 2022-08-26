@@ -2,6 +2,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QFileDialog,QAbstractItemView,QMenu
 import os
+import eyed3
 
 support_ext = [".mp3", ".flac"]
 
@@ -15,7 +16,7 @@ class MusicListMan():
         if (ext in support_ext):
             filename = os.path.split(url)[1]
             if (filename in self.music_info_map.keys()):
-                self.music_list_widget.main_window.Log_Lw.Waring("列表中已经包含文件: " + filename)
+                self.music_list_widget.main_window.Log_Lw.Error("列表中已经包含文件: " + filename)
                 return
             self.music_info_map[filename] = (filename, url, 0)
             self.music_list_widget.addItem(os.path.split(url)[1])
@@ -28,6 +29,12 @@ class MusicListMan():
         for item in items:
             self.music_list_widget.takeItem(self.music_list_widget.row(item))
             del self.music_info_map[filename]
+            
+    def getFullName(self, filename):
+        if (filename in self.music_info_map.keys()):
+            return self.music_info_map[filename]
+        else:
+            return ""
 
 
 class MusicListWidget(QtWidgets.QListWidget):
@@ -40,6 +47,7 @@ class MusicListWidget(QtWidgets.QListWidget):
         self.music_list_man = MusicListMan(self)
         
         self.customContextMenuRequested.connect(self.rightMenuShow)
+        self.itemClicked.connect(self.clickedItem)
     
     def dragEnterEvent(self, e):
         e.accept()
@@ -69,6 +77,14 @@ class MusicListWidget(QtWidgets.QListWidget):
         items = self.selectedItems()
         for item in items:
             self.music_list_man.delMusic(item.text())
+            
+    def clickedItem(self, item):
+        fullname = self.music_list_man.getFullName(item.text())
+        if fullname != "":
+            audiofile = eyed3.load(fullname)
+            print (audiofile.tag)
+        else:
+            self.main_window.Log_Lw.Debug(item.text())
         
     def SetMainWindow(self, main_window):
         self.main_window = main_window
