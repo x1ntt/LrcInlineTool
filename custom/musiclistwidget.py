@@ -32,7 +32,7 @@ class MusicListMan():
             
     def getFullName(self, filename):
         if (filename in self.music_info_map.keys()):
-            return self.music_info_map[filename]
+            return self.music_info_map[filename][1]
         else:
             return ""
 
@@ -78,11 +78,27 @@ class MusicListWidget(QtWidgets.QListWidget):
         for item in items:
             self.music_list_man.delMusic(item.text())
             
+    def loadInfo(self, audiofile):
+        if not audiofile:
+            raise "load audiofile fail!"
+        self.main_window.Title_Le.setText(audiofile.tag.title if audiofile.tag.title else "")
+        self.main_window.Artist_Te.setText(audiofile.tag.artist if audiofile.tag.artist else "")
+        self.main_window.Album_Le.setText(audiofile.tag.album if audiofile.tag.album else "")
+        if len(audiofile.tag.lyrics) == 0:
+            lrc_text = ""
+        else:
+            lrc_text = audiofile.tag.lyrics[0].text
+        self.main_window.Lrc_Te.setText(lrc_text)
+        
     def clickedItem(self, item):
         fullname = self.music_list_man.getFullName(item.text())
         if fullname != "":
-            audiofile = eyed3.load(fullname)
-            print (audiofile.tag)
+            try:
+                audiofile = eyed3.load(fullname)
+                self.loadInfo(audiofile)
+            except Exception as e:
+                self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
+            
         else:
             self.main_window.Log_Lw.Debug(item.text())
         
