@@ -92,6 +92,9 @@ class MusicListWidget(QtWidgets.QListWidget):
         else:
             lrc_text = self.audiofile.tag.lyrics[0].text
         self.main_window.Lrc_Te.setText(lrc_text)
+        if not self.audiofile.info:
+            raise "文件格式错误 获取不到文件信息"
+        self.main_window.Time_Tl.setText(eyed3.utils.formatTime(self.audiofile.info.time_secs))
         
     def saveInfo(self):
         if not self.audiofile:
