@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import QFileDialog,QAbstractItemView,QMenu
 import os
 import eyed3
 
-support_ext = [".mp3", ".flac"]
+support_ext = [".mp3"]
 
 class MusicListMan():
     def __init__(self, _music_list_widget):
@@ -63,7 +63,10 @@ class MusicListWidget(QtWidgets.QListWidget):
                 self.music_list_man.addMusic(url)
 
     def addMusic(self):
-        files = QFileDialog.getOpenFileNames(self, "选择音乐文件(支持多选)", "", "音乐文件 (*.mp3 *.flac)")
+        support_list = ""
+        for support in support_ext:
+            support_list += (" *" + support)
+        files = QFileDialog.getOpenFileNames(self, "选择音乐文件(支持多选)", "", "音乐文件 (" + support_list + ")")
         for file in files[0]:
             self.music_list_man.addMusic(file)
                 
@@ -78,24 +81,34 @@ class MusicListWidget(QtWidgets.QListWidget):
         for item in items:
             self.music_list_man.delMusic(item.text())
             
-    def loadInfo(self, audiofile):
-        if not audiofile:
-            raise "load audiofile fail!"
-        self.main_window.Title_Le.setText(audiofile.tag.title if audiofile.tag.title else "")
-        self.main_window.Artist_Te.setText(audiofile.tag.artist if audiofile.tag.artist else "")
-        self.main_window.Album_Le.setText(audiofile.tag.album if audiofile.tag.album else "")
-        if len(audiofile.tag.lyrics) == 0:
+    def loadInfo(self):
+        if not self.audiofile:
+            raise "载入失败"
+        self.main_window.Title_Le.setText(self.audiofile.tag.title if self.audiofile.tag.title else "")
+        self.main_window.Artist_Te.setText(self.audiofile.tag.artist if self.audiofile.tag.artist else "")
+        self.main_window.Album_Le.setText(self.audiofile.tag.album if self.audiofile.tag.album else "")
+        if len(self.audiofile.tag.lyrics) == 0:
             lrc_text = ""
         else:
-            lrc_text = audiofile.tag.lyrics[0].text
+            lrc_text = self.audiofile.tag.lyrics[0].text
         self.main_window.Lrc_Te.setText(lrc_text)
+        
+    def saveInfo(self):
+        if not self.audiofile:
+            raise "没有选择文件"
+        self.audiofile.tag.title = self.main_window.Title_Le.text()
+        self.audiofile.tag.artist = self.main_window.Artist_Te.text()
+        self.audiofile.tag.album = self.main_window.Album_Le.text()
+        self.audiofile.tag.lyrics.set(self.main_window.Lrc_Te.toPlainText())
+        self.audiofile.tag.save()
+        self.main_window.Log_Lw.Info("保存成功: " + self.audiofile.tag.file_info.name)
         
     def clickedItem(self, item):
         fullname = self.music_list_man.getFullName(item.text())
         if fullname != "":
             try:
-                audiofile = eyed3.load(fullname)
-                self.loadInfo(audiofile)
+                self.audiofile = eyed3.load(fullname)
+                self.loadInfo()
             except Exception as e:
                 self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
             

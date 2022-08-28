@@ -11,6 +11,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.OpenFile_Btn.clicked.connect(self.musicList.addMusic)
         self.Remove_Btn.clicked.connect(self.musicList.removeMusic)
+        self.Save_Btn.clicked.connect(self.musicList.saveInfo)
         
         self.Log_Lw.SetMainWindow(self)
         self.musicList.SetMainWindow(self)
