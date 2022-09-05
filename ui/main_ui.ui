@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>886</width>
+    <width>882</width>
     <height>687</height>
    </rect>
   </property>
@@ -210,7 +210,7 @@
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>350</y>
+       <y>410</y>
        <width>41</width>
        <height>24</height>
       </rect>
@@ -219,17 +219,17 @@
       <string>搜索</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="LrcMusicName_Le">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>350</y>
-       <width>191</width>
+       <y>410</y>
+       <width>111</width>
        <height>21</height>
       </rect>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox">
+    <widget class="QComboBox" name="Source_Cb">
      <property name="geometry">
       <rect>
        <x>60</x>
@@ -252,41 +252,33 @@
       <string>歌词源: </string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QLineEdit" name="LrcArt_Le">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>130</x>
        <y>410</y>
-       <width>131</width>
-       <height>24</height>
+       <width>71</width>
+       <height>21</height>
       </rect>
      </property>
-     <property name="text">
-      <string>一键批量嵌入</string>
-     </property>
     </widget>
-    <widget class="QTableView" name="Lrc_Tv">
+    <widget class="LrcTableWidget" name="LrcList_Tw">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
        <width>241</width>
-       <height>321</height>
+       <height>351</height>
       </rect>
      </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>410</y>
-       <width>101</width>
-       <height>20</height>
-      </rect>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
-     <property name="text">
-      <string>不嵌入已有的</string>
-     </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
@@ -382,7 +374,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>886</width>
+     <width>882</width>
      <height>22</height>
     </rect>
    </property>
@@ -399,6 +391,11 @@
    <class>MusicListWidget</class>
    <extends>QListWidget</extends>
    <header location="global">custom/musiclistwidget</header>
+  </customwidget>
+  <customwidget>
+   <class>LrcTableWidget</class>
+   <extends>QTableWidget</extends>
+   <header location="global">custom/lrctablewidget</header>
   </customwidget>
  </customwidgets>
  <resources/>

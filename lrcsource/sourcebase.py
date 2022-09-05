@@ -1,20 +1,27 @@
 
 # 传递搜索依据
 class SearchRequest:
-    def __init__(self, song_name):
-        self.song_name = song_name
+    def __init__(self, music_name, art_name):
+        self.music_name = music_name
+        self.art_name = art_name
 
 # 传递搜索结果 所有源的实现统一使用这两个结构
-class SearchResponse:
-    def __init__(self, result_list):
-        self.result_list = result_list
+class SearchResponseItem:
+    def __init__(self, music_id, music_name, art_list):
+        self.music_id = music_id
+        self.music_name = music_name
+        self.art = art_list
+        
+    def print(self):
+        print (f"{self.music_id}, {self.music_name}", end="")
+        print (self.art)
 
 class SourceBase:
     def __init__(self):
         self.source_name = ""
         
-    def SetMainWindow(main_window):
-        self.main_window = main_window
+    def SetCallbackObject(self, obj):
+        self.callbackObject = obj
         
     def getResultList(self, search_reqeust):
         pass

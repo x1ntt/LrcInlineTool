@@ -66,7 +66,7 @@ class MusicListWidget(QtWidgets.QListWidget):
         support_list = ""
         for support in support_ext:
             support_list += (" *" + support)
-        files = QFileDialog.getOpenFileNames(self, "选择音乐文件(支持多选)", "", "音乐文件 (" + support_list + ")")
+        files = QFileDialog.getOpenFileNames(self, "选择音乐文件(支持多选)", "D:\\CloudMusic", "音乐文件 (" + support_list + ")")
         for file in files[0]:
             self.music_list_man.addMusic(file)
                 
@@ -85,7 +85,9 @@ class MusicListWidget(QtWidgets.QListWidget):
         if not self.audiofile:
             raise "载入失败"
         self.main_window.Title_Le.setText(self.audiofile.tag.title if self.audiofile.tag.title else "")
+        self.main_window.LrcMusicName_Le.setText(self.audiofile.tag.title if self.audiofile.tag.title else "")
         self.main_window.Artist_Te.setText(self.audiofile.tag.artist if self.audiofile.tag.artist else "")
+        self.main_window.LrcArt_Le.setText(self.audiofile.tag.artist if self.audiofile.tag.artist else "")
         self.main_window.Album_Le.setText(self.audiofile.tag.album if self.audiofile.tag.album else "")
         if len(self.audiofile.tag.lyrics) == 0:
             lrc_text = ""

@@ -12,13 +12,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.OpenFile_Btn.clicked.connect(self.musicList.addMusic)
         self.Remove_Btn.clicked.connect(self.musicList.removeMusic)
         self.Save_Btn.clicked.connect(self.musicList.saveInfo)
+        self.SearchLRC_Btn.clicked.connect(self.LrcList_Tw.searchLrc)
         
         self.Log_Lw.SetMainWindow(self)
         self.musicList.SetMainWindow(self)
+        self.LrcList_Tw.SetMainWindow(self)
+        
+        self.LrcList_Tw.addSource()
         
         self.show()
         
-    # 启用
+    # 事件处理函数 ↓
     def dragEnterEvent(self, e):
         # print(e)
         e.accept()
