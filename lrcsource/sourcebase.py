@@ -16,7 +16,7 @@ class SourceBase:
     def SetMainWindow(main_window):
         self.main_window = main_window
         
-    def handleRequest(self, search_reqeust):
+    def getResultList(self, search_reqeust):
         pass
         
     def sendRequest(self):

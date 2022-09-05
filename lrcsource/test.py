@@ -8,7 +8,7 @@ def main():
     app = QApplication(sys.argv)    
     sr = sourcebase.SearchRequest("声")
     ns = sourcenetease.NeteaseSource()
-    ns.handleRequest(sr)
+    ns.getResultList(sr)
     
     sys.exit(app.exec())
 
