@@ -1,6 +1,6 @@
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QFileDialog,QAbstractItemView,QMenu
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QAction
 import os
 import eyed3
 
@@ -72,8 +72,8 @@ class MusicListWidget(QtWidgets.QListWidget):
                 
     def rightMenuShow(self):
         popMenu = QMenu()
-        popMenu.addAction(QtGui.QAction(u'添加', self, triggered=self.addMusic))
-        popMenu.addAction(QtGui.QAction(u'删除', self, triggered=self.removeMusic))
+        popMenu.addAction(QAction(u'添加', self, triggered=self.addMusic))
+        popMenu.addAction(QAction(u'删除', self, triggered=self.removeMusic))
         popMenu.exec(QtGui.QCursor.pos())
     
     def removeMusic(self):

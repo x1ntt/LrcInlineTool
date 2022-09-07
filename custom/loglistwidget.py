@@ -1,6 +1,6 @@
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QColor
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QColor
 
 class LogListWidget(QtWidgets.QListWidget):
     def __init__(self, *args, **kwargs):

@@ -1,7 +1,7 @@
 from lrcsource.sourcebase import SourceBase, SearchRequest, SearchResponseItem
 
-from PyQt6.QtNetwork import QNetworkReply, QNetworkAccessManager, QNetworkRequest
-from PyQt6.QtCore import QUrl
+from PyQt5.QtNetwork import QNetworkReply, QNetworkAccessManager, QNetworkRequest
+from PyQt5.QtCore import QUrl
 import json
 
 class NeteaseSource(SourceBase):
