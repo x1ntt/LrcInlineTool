@@ -1,6 +1,6 @@
 import sys
 from ui.main_ui import Ui_MainWindow
-from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):

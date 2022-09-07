@@ -1,6 +1,6 @@
 
-from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QFileDialog,QAbstractItemView,QMenu
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu
 import os
 import eyed3
 
