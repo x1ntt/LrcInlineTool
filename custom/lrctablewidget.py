@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QTableWidget,QTableWidgetItem
+from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QTableWidget,QTableWidgetItem,QMenu,QAction
 import os
 
 from lrcsource.sourcenetease import NeteaseSource
@@ -11,7 +11,9 @@ class LrcTableWidget(QTableWidget):
         self.source_map = dict()
         self.search_result_map = dict()
         
-        # 加载源
+        self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.rightMenuShow)
+
     def addSource(self):
         ns = NeteaseSource()
         self.main_window.Source_Cb.addItem(ns.source_name)
@@ -43,6 +45,19 @@ class LrcTableWidget(QTableWidget):
     def lrcResult(self, error_str, lrc):
         if (error_str != ""):
             print (f"获取歌词失败 {error_str}")
+
+    def getLrc(self):
+        pass
+
+    def rightMenuShow(self, pos):
+        popMenu = QMenu()
+        item = popMenu.addAction(u'左侧显示歌词')
+        item2 = popMenu.addAction(u'另存为歌词')
+        action = popMenu.exec(QtGui.QCursor.pos())
+        if action == item:
+            print ("1")
+        elif action == item2:
+            print ("2")
         
     def SetMainWindow(self, main_window):
         self.main_window = main_window
