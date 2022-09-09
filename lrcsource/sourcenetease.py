@@ -42,8 +42,6 @@ class NeteaseSource(SourceBase):
         if reply.error() == QNetworkReply.NetworkError.NoError:
             bty = reply.readAll()
             json_str = str(bty, 'utf-8')
-            # print(json_str)
-            # res_list = self.parseJson(json_str)
             try:
                 res_list = self.parseJson(json_str)
             except Exception as e:
@@ -51,11 +49,38 @@ class NeteaseSource(SourceBase):
         else:
             print(f"错误 {reply.error()}")
             error_str = f"错误 {reply.error()}"
-        # print (res_list)
         self.callbackObject.resultList(error_str, res_list)
         
-    def getLrc(self):
-        pass
+    def getLrc(self, music_id, reason):
+        if len(music_id) == 0:
+            return
+        url = f"http://music.163.com/api/song/lyric?id={str(music_id)}&lv=-1&kv=-1&tv=-1"
+        self.req2 = QNetworkRequest(QUrl(url))
+        self.nam2 = QNetworkAccessManager()
+        self.nam2.finished.connect(self.httpFinishedLrc)
+        self.nam2.get(self.req2)
+        self.reason2 = reason
+        self.music_id2 = music_id
+        
+    def parseLrcJson(self, json_str):
+        if len(json_str) == 0:
+            raise "返回结果为空"
+        res = json.loads(json_str)
+        if res["code"] != 200:
+            raise f"api返回的状态码不正确 {res['code']}"
+        return res["lrc"]["lyric"]
         
     def httpFinishedLrc(self, reply):
-        pass
+        bty = ""
+        error_str = ""
+        json_str = ""
+        if reply.error() == QNetworkReply.NetworkError.NoError:
+            bty = reply.readAll()
+            json_str = str(bty, 'utf-8')
+            try:
+                res = self.parseLrcJson(json_str)
+            except Exception as e:
+                error_str = str(e)
+        else:
+            error_str = f"错误 {reply.error()}"
+        self.callbackObject.lrcResult(error_str, res, self.music_id2, self.reason2)

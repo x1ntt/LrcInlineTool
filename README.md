@@ -10,13 +10,13 @@
 
 代码基于`PyQt6`，需要依赖以下库
 
-+ `pip install PyQt6`
++ `pip install PyQt5`
 
 + `pip install eyed3` (用于支持修改`mp3`文件标签)
 
   如果想要修改`.ui文件`则需要安装下面的工具，使用`designer.exe`编辑`ui文件`
 
-+ `pip install PyQt6-tools`
++ `pip install PyQt5-tools`
 
 ## 重新生成界面代码
 

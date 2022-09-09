@@ -10,6 +10,7 @@ class LrcTableWidget(QTableWidget):
         super(LrcTableWidget, self).__init__(*args, **kwargs);
         self.source_map = dict()
         self.search_result_map = dict()
+        self.lrc_result_map = dict()
         
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.rightMenuShow)
@@ -23,8 +24,8 @@ class LrcTableWidget(QTableWidget):
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
         search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), "")
-        source.getResultList(search_request)
         source.SetCallbackObject(self)
+        source.getResultList(search_request)
     
     def resultList(self, error_str, result_list):
         if (error_str != ""):
@@ -40,24 +41,33 @@ class LrcTableWidget(QTableWidget):
             self.setItem(cnt, 0, it)
             it2 = QTableWidgetItem(result.art[0])
             self.setItem(cnt, 1, it2)
+            self.search_result_map[cnt] = result
             cnt += 1
             
-    def lrcResult(self, error_str, lrc):
+    def lrcResult(self, error_str, lrc, music_id, reason):
         if (error_str != ""):
             print (f"获取歌词失败 {error_str}")
+        self.lrc_result_map[music_id] = lrc
+        if reason == 1:
+            self.main_window.Lrc_Te.setText(lrc)
 
     def getLrc(self):
-        pass
-
+        current_source = self.main_window.Source_Cb.currentText()
+        source = self.source_map[current_source]
+        source.SetCallbackObject(self)
+        self.search_result_map[self.currentRow()].music_id
+        mid = self.search_result_map[self.currentRow()].music_id
+        source.getLrc(str(mid), 1)
+        
     def rightMenuShow(self, pos):
         popMenu = QMenu()
         item = popMenu.addAction(u'左侧显示歌词')
         item2 = popMenu.addAction(u'另存为歌词')
         action = popMenu.exec(QtGui.QCursor.pos())
         if action == item:
-            print ("1")
+            self.getLrc()
         elif action == item2:
-            print ("2")
+            self.getLrc()
         
     def SetMainWindow(self, main_window):
         self.main_window = main_window
