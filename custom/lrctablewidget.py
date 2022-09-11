@@ -24,6 +24,8 @@ class LrcTableWidget(QTableWidget):
         
     def searchLrc(self):
         self.music_file_name = self.main_window.musicList.getCurMusicFullName()
+        if len(self.main_window.LrcMusicName_Le.text()) == 0:
+            return 
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
         search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), "")
@@ -66,6 +68,8 @@ class LrcTableWidget(QTableWidget):
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
         source.SetCallbackObject(self)
+        if self.currentRow() == -1:
+            return 
         mid = self.search_result_map[self.currentRow()].music_id
         if mid in self.lrc_result_map.keys():
             cur_lrc = self.lrc_result_map[music_id]
