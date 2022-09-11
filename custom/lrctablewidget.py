@@ -43,7 +43,7 @@ class LrcTableWidget(QTableWidget):
         for result in result_list:
             it = QTableWidgetItem(result.music_name)
             self.setItem(cnt, 0, it)
-            it2 = QTableWidgetItem(result.art[0])
+            it2 = QTableWidgetItem("/".join(result.art))
             self.setItem(cnt, 1, it2)
             self.search_result_map[cnt] = result
             cnt += 1
