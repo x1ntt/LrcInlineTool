@@ -120,5 +120,22 @@ class MusicListWidget(QtWidgets.QListWidget):
         else:
             self.main_window.Log_Lw.Debug(item.text())
         
+    # 获取当前选择的音乐文件名
+    def getCurMusicName(self):
+        item = self.currentItem()
+        if item == None:
+            return
+        return item.text()
+        
+    # 获取带路径的全名
+    def getCurMusicFullName(self):
+        item = self.currentItem()
+        if item == None:
+            return
+        fullname = self.music_list_man.getFullName(item.text())
+        if fullname != "":
+            return fullname
+        return ""
+        
     def SetMainWindow(self, main_window):
         self.main_window = main_window

@@ -12,6 +12,8 @@ class LrcTableWidget(QTableWidget):
         self.search_result_map = dict()
         self.lrc_result_map = dict()
         
+        self.music_file_name = ""
+        
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.rightMenuShow)
 
@@ -21,6 +23,7 @@ class LrcTableWidget(QTableWidget):
         self.source_map[ns.source_name] = ns
         
     def searchLrc(self):
+        self.music_file_name = self.main_window.musicList.getCurMusicFullName()
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
         search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), "")
@@ -33,6 +36,7 @@ class LrcTableWidget(QTableWidget):
         if len(result_list) == 0:
             print ("结果为空")
         self.search_result_map.clear()
+        self.lrc_result_map.clear()
         self.setColumnCount(2)
         self.setRowCount(len(result_list))
         cnt = 0
@@ -50,14 +54,24 @@ class LrcTableWidget(QTableWidget):
         self.lrc_result_map[music_id] = lrc
         if reason == 1:
             self.main_window.Lrc_Te.setText(lrc)
+        elif reason == 2:
+            lrc_name = os.path.splitext(self.music_file_name)[0]
+            file_name, selected_filter = QFileDialog.getSaveFileName(self, "保存为：", lrc_name, "歌词文件 (*.lrc)")
+            print ((file_name, selected_filter))
+            if len(file_name) != 0:
+                with open(file_name, "w") as f:
+                    f.write(lrc)
 
-    def getLrc(self):
+    def getLrc(self, reason):
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
         source.SetCallbackObject(self)
-        self.search_result_map[self.currentRow()].music_id
         mid = self.search_result_map[self.currentRow()].music_id
-        source.getLrc(str(mid), 1)
+        if mid in self.lrc_result_map.keys():
+            cur_lrc = self.lrc_result_map[music_id]
+            lrcResult("", cur_lrc, mid, reason)
+        else:
+            source.getLrc(str(mid), reason)
         
     def rightMenuShow(self, pos):
         popMenu = QMenu()
@@ -65,9 +79,9 @@ class LrcTableWidget(QTableWidget):
         item2 = popMenu.addAction(u'另存为歌词')
         action = popMenu.exec(QtGui.QCursor.pos())
         if action == item:
-            self.getLrc()
+            self.getLrc(1)
         elif action == item2:
-            self.getLrc()
+            self.getLrc(2)
         
     def SetMainWindow(self, main_window):
         self.main_window = main_window
