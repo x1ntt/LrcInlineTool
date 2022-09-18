@@ -10,22 +10,19 @@ class Handle_mp3:
         if not self.audio:
             raise "文件读取失败"
         dict_keys = self.audio.keys()
+
+        info_dict = dict()
         
-        music_name = ""
-        artist_name = ""
-        alnum_name = ""
-        lyrics = ""
-        
-        self.audio.pprint()
+        # self.audio.pprint()
         
         if "TIT2" in dict_keys:
-            music_name = self.audio["TIT2"]
+            info_dict['music_name'] = ",".join(self.audio["TIT2"])
         if "TALB" in dict_keys:
-            alnum_name = self.audio["TALB"]
+            info_dict['alnum_name'] = ",".join(self.audio["TALB"])
         if "TPE1" in dict_keys:
-            artist_name = self.audio["TPE1"]
+            info_dict['artist_name'] = "/".join(self.audio["TPE1"])
         if "USLT::eng" in dict_keys:
-            lyrics = self.audio["USLT::eng"]
+            info_dict['lyrics'] = str(self.audio["USLT::eng"])
         # print (dict_keys)
         
-        return (",".join(music_name.text), "/".join(artist_name), ",".join(alnum_name), lyrics)
+        return info_dict

@@ -9,20 +9,17 @@ class Handle_flac:
             raise "文件读取失败"
         dict_keys = self.audio.keys()
         
-        music_name = ""
-        artist_name = ""
-        alnum_name = ""
-        lyrics = ""
+        # self.audio.pprint()
         
-        self.audio.pprint()
+        info_dict = dict()
         
         if "title" in dict_keys:
-            music_name = self.audio["title"]
+            info_dict['music_name'] = ",".join(self.audio["title"])
         if "album" in dict_keys:
-            alnum_name = self.audio["album"]
+            info_dict['alnum_name'] = ",".join(self.audio["album"])
         if "artist" in dict_keys:
-            artist_name = self.audio["artist"]
+            info_dict['artist_name'] = "/".join(self.audio["artist"])
         if "lyrics" in dict_keys:
-            lyrics = self.audio["lyrics"]
+            info_dict['lyrics'] = self.audio["lyrics"]
         
-        return (",".join(music_name), "/".join(artist_name), ",".join(alnum_name), lyrics)
+        return info_dict

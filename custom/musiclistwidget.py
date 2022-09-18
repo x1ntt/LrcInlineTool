@@ -4,7 +4,11 @@ from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QAction
 import os
 import eyed3
 
-support_ext = [".mp3"]
+from process.handle_mp3 import Handle_mp3
+from process.handle_flac import Handle_flac
+
+
+support_ext = [".mp3", ".flac"]
 
 class MusicListMan():
     def __init__(self, _music_list_widget):
@@ -81,22 +85,40 @@ class MusicListWidget(QtWidgets.QListWidget):
         for item in items:
             self.music_list_man.delMusic(item.text())
             
-    def loadInfo(self):
-        if not self.audiofile:
-            raise "载入失败"
-        self.main_window.Title_Le.setText(self.audiofile.tag.title if self.audiofile.tag.title else "")
-        self.main_window.LrcMusicName_Le.setText(self.audiofile.tag.title if self.audiofile.tag.title else "")
-        self.main_window.Artist_Te.setText(self.audiofile.tag.artist if self.audiofile.tag.artist else "")
-        self.main_window.LrcArt_Le.setText(self.audiofile.tag.artist if self.audiofile.tag.artist else "")
-        self.main_window.Album_Le.setText(self.audiofile.tag.album if self.audiofile.tag.album else "")
-        if len(self.audiofile.tag.lyrics) == 0:
+    def loadInfo(self, fullname):
+        tmp = fullname.split(".")
+        if len(tmp) < 2:
+            raise "文件名不正确 缺少后缀名"
+        ext_name = tmp[-1]
+        
+        music_info_obj = None
+        if ext_name == "mp3":
+            music_info_obj = Handle_mp3(fullname)
+        elif ext_name == "flac":
+            music_info_obj = Handle_flac(fullname)
+        else:
+            raise f"无法处理的后缀名{ext_name}"
+        
+        if music_info_obj == None:
+            raise "获取歌曲信息"
+        
+        info_dict = music_info_obj.getInfo()
+        
+        self.main_window.Title_Le.setText(info_dict['music_name'] if 'music_name' in info_dict else "")
+        self.main_window.LrcMusicName_Le.setText(info_dict['music_name'] if'music_name' in info_dict else "")
+        self.main_window.Artist_Te.setText(info_dict['artist_name'] if 'artist_name' in info_dict else "")
+        self.main_window.LrcArt_Le.setText(info_dict['artist_name'] if 'artist_name' in info_dict else "")
+        self.main_window.Album_Le.setText(info_dict['alnum_name'] if 'alnum_name' in info_dict else "")
+        
+        if ("lyrics" not in info_dict):
             lrc_text = ""
         else:
-            lrc_text = self.audiofile.tag.lyrics[0].text
+            lrc_text = info_dict['lyrics']
         self.main_window.Lrc_Te.setText(lrc_text)
-        if not self.audiofile.info:
-            raise "文件格式错误 获取不到文件信息"
-        self.main_window.Time_Tl.setText(eyed3.utils.formatTime(self.audiofile.info.time_secs))
+        
+        # if not self.audiofile.info:
+        #    raise "文件格式错误 获取不到文件信息"
+        # self.main_window.Time_Tl.setText(eyed3.utils.formatTime(self.audiofile.info.time_secs))
         
     def saveInfo(self):
         if not self.audiofile:
@@ -111,11 +133,10 @@ class MusicListWidget(QtWidgets.QListWidget):
     def clickedItem(self, item):
         fullname = self.music_list_man.getFullName(item.text())
         if fullname != "":
-            try:
-                self.audiofile = eyed3.load(fullname)
-                self.loadInfo()
-            except Exception as e:
-                self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
+            # try:
+            self.loadInfo(fullname)
+            # except Exception as e:
+                # self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
             
         else:
             self.main_window.Log_Lw.Debug(item.text())
