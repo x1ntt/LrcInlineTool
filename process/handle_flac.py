@@ -1,4 +1,5 @@
 from mutagen.flac import FLAC
+from time import gmtime, strftime
 
 class Handle_flac:
     def __init__(self, full_filename):
@@ -19,6 +20,11 @@ class Handle_flac:
             info_dict['artist_name'] = "/".join(self.audio["artist"])
         if "lyrics" in dict_keys:
             info_dict['lyrics'] = "".join(self.audio["lyrics"])
+        
+        try:
+            info_dict['time_long'] = strftime("%H:%M:%S", gmtime(int(self.audio.info.length)))
+        except Exception as e:
+            print (e)
         
         return info_dict
         

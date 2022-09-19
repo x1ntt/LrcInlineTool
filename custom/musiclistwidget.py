@@ -117,9 +117,8 @@ class MusicListWidget(QtWidgets.QListWidget):
             lrc_text = info_dict['lyrics']
         self.main_window.Lrc_Te.setText(lrc_text)
         
-        # if not self.audiofile.info:
-        #    raise "文件格式错误 获取不到文件信息"
-        # self.main_window.Time_Tl.setText(eyed3.utils.formatTime(self.audiofile.info.time_secs))
+        if 'time_long' in info_dict:
+            self.main_window.Time_Tl.setText(info_dict['time_long'])
         
     def saveInfo(self):
         if self.music_info_obj == None:
