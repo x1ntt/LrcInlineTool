@@ -52,6 +52,8 @@ class MusicListWidget(QtWidgets.QListWidget):
         
         self.customContextMenuRequested.connect(self.rightMenuShow)
         self.itemClicked.connect(self.clickedItem)
+        
+        self.music_info_obj = None
     
     def dragEnterEvent(self, e):
         e.accept()
@@ -91,18 +93,17 @@ class MusicListWidget(QtWidgets.QListWidget):
             raise "文件名不正确 缺少后缀名"
         ext_name = tmp[-1]
         
-        music_info_obj = None
         if ext_name == "mp3":
-            music_info_obj = Handle_mp3(fullname)
+            self.music_info_obj = Handle_mp3(fullname)
         elif ext_name == "flac":
-            music_info_obj = Handle_flac(fullname)
+            self.music_info_obj = Handle_flac(fullname)
         else:
             raise f"无法处理的后缀名{ext_name}"
         
-        if music_info_obj == None:
+        if self.music_info_obj == None:
             raise "获取歌曲信息"
         
-        info_dict = music_info_obj.getInfo()
+        info_dict = self.music_info_obj.getInfo()
         
         self.main_window.Title_Le.setText(info_dict['music_name'] if 'music_name' in info_dict else "")
         self.main_window.LrcMusicName_Le.setText(info_dict['music_name'] if'music_name' in info_dict else "")
@@ -121,14 +122,19 @@ class MusicListWidget(QtWidgets.QListWidget):
         # self.main_window.Time_Tl.setText(eyed3.utils.formatTime(self.audiofile.info.time_secs))
         
     def saveInfo(self):
-        if not self.audiofile:
+        if self.music_info_obj == None:
             raise "没有选择文件"
-        self.audiofile.tag.title = self.main_window.Title_Le.text()
-        self.audiofile.tag.artist = self.main_window.Artist_Te.text()
-        self.audiofile.tag.album = self.main_window.Album_Le.text()
-        self.audiofile.tag.lyrics.set(self.main_window.Lrc_Te.toPlainText())
-        self.audiofile.tag.save()
-        self.main_window.Log_Lw.Info("保存成功: " + self.audiofile.tag.file_info.name)
+        
+        info_dict = dict()
+        
+        info_dict['music_name'] = self.main_window.Title_Le.text()
+        info_dict['artist_name'] = self.main_window.Artist_Te.text()
+        info_dict['alnum_name'] = self.main_window.Album_Le.text()
+        info_dict['lyrics'] = self.main_window.Lrc_Te.toPlainText()
+        
+        self.music_info_obj.setInfo(info_dict)
+        self.music_info_obj.save()
+        self.main_window.Log_Lw.Info("保存成功: " + self.getCurMusicName())
         
     def clickedItem(self, item):
         fullname = self.music_list_man.getFullName(item.text())

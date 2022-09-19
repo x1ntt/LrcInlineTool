@@ -9,8 +9,6 @@ class Handle_flac:
             raise "文件读取失败"
         dict_keys = self.audio.keys()
         
-        # self.audio.pprint()
-        
         info_dict = dict()
         
         if "title" in dict_keys:
@@ -20,6 +18,19 @@ class Handle_flac:
         if "artist" in dict_keys:
             info_dict['artist_name'] = "/".join(self.audio["artist"])
         if "lyrics" in dict_keys:
-            info_dict['lyrics'] = self.audio["lyrics"]
+            info_dict['lyrics'] = "".join(self.audio["lyrics"])
         
         return info_dict
+        
+    def setInfo(self, info_dict):
+        if "music_name" in info_dict:
+            self.audio["title"] = info_dict['music_name']
+        if "artist_name" in info_dict:
+            self.audio["artist"] = info_dict['artist_name']
+        if "alnum_name" in info_dict:
+            self.audio["album"] = info_dict['alnum_name']
+        if "lyrics" in info_dict:
+            self.audio["lyrics"] = info_dict['lyrics']
+            
+    def save(self):
+        self.audio.save()
