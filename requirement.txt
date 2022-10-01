@@ -1,1 +1,2 @@
 mutagen
+PyQt5
