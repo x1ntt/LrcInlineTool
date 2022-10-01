@@ -4,7 +4,8 @@ from time import gmtime, strftime
 
 class Handle_mp3:
     def __init__(self, full_filename):
-        self.audio = MP3(full_filename)
+        self.audio = ID3(full_filename)
+        self.audio2 = MP3(full_filename)
     
     def getInfo(self):
         if not self.audio:
@@ -12,18 +13,19 @@ class Handle_mp3:
         dict_keys = self.audio.keys()
 
         info_dict = dict()
-        
+
         if "TIT2" in dict_keys:
             info_dict['music_name'] = ",".join(self.audio["TIT2"])
         if "TALB" in dict_keys:
             info_dict['alnum_name'] = ",".join(self.audio["TALB"])
         if "TPE1" in dict_keys:
             info_dict['artist_name'] = "/".join(self.audio["TPE1"])
-        if "USLT::eng" in dict_keys:
-            info_dict['lyrics'] = str(self.audio["USLT::eng"])
         
+        if len(self.audio.getall("USLT")) > 0:
+            info_dict['lyrics'] = self.audio.getall("USLT")[0].text
+            print (self.audio.getall("USLT"))
         try:
-            info_dict['time_long'] = strftime("%H:%M:%S", gmtime(int(self.audio.info.length)))
+            info_dict['time_long'] = strftime("%H:%M:%S", gmtime(int(self.audio2.info.length)))
         except Exception as e:
             print (e)
         
@@ -37,7 +39,8 @@ class Handle_mp3:
         if "alnum_name" in info_dict:
             self.audio["TALB"] = TALB(encoding=3, text=info_dict['alnum_name'])
         if "lyrics" in info_dict:
-            self.audio["USLT::eng"] = USLT(encoding=3, text=info_dict['lyrics'])
+            self.audio.delall("USLT")
+            self.audio["USLT"] = USLT(encoding=3, lang='eng', text=info_dict['lyrics'])
             
     def save(self):
         self.audio.save()

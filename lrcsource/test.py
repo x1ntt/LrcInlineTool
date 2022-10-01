@@ -1,7 +1,7 @@
 import sourcebase
 import sourcenetease
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget, QMainWindow
 
 class T:
     def resultList(self, e, l):

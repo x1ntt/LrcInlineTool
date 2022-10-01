@@ -38,3 +38,21 @@
 ### 获取歌词
 
 `http://music.163.com/api/song/lyric?id=424057340&lv=-1&kv=-1&tv=-1`
+
+
+
+## mutagen
+
+https://mutagen.readthedocs.io/en/latest/
+
+不管是mp3还是flac都是用的ID3保存的标签
+
+### 基础信息
+
+```Python
+import mutagen
+mutagen.File('1.mp3')			# 返回一个类似于字典的结构，用法一样
+mutagen.File('1.mp3').keys() 	# 返回所有的标签名字
+mutagen.File('1.mp3')['TIT2']	# 访问标签对应的数据
+```
+

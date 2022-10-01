@@ -129,3 +129,6 @@ dmypy.json
 .pyre/
 
 /music
+*.mp3
+*.flac
+*.swp
