@@ -2,11 +2,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QAction
 import os
-import eyed3
 
 from process.handle_mp3 import Handle_mp3
 from process.handle_flac import Handle_flac
-
 
 support_ext = [".mp3", ".flac"]
 

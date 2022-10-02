@@ -8,7 +8,7 @@
 
 ## 依赖
 
-`pip3 install -r requirement.txt` 即可正餐使用
+`pip3 install -r requirement.txt` 即可正常使用
 
 代码基于`PyQt5`，需要依赖以下库
 
