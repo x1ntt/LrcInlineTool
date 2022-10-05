@@ -8,7 +8,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(*args, **kwargs)
         self.setupUi(self)
         self.setAcceptDrops(True)
-        self.setAttribute(Qt.WA_TranslucentBackground )
         
         self.OpenFile_Btn.clicked.connect(self.musicList.addMusic)
         self.Remove_Btn.clicked.connect(self.musicList.removeMusic)
