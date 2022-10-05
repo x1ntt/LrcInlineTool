@@ -31,12 +31,13 @@ class LrcTableWidget(QTableWidget):
         search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), "")
         source.SetCallbackObject(self)
         source.getResultList(search_request)
+        self.main_window.Log_Lw.Info(f"通过 {source.source_name}, 获取{self.main_window.LrcMusicName_Le.text()}歌词")
     
     def resultList(self, error_str, result_list):
         if (error_str != ""):
-            print (f"获取搜索结果失败 {error_str}")
+            self.main_window.Log_Lw.Waring(f"获取结果列表失败 {error_str}")
         if len(result_list) == 0:
-            print ("结果为空")
+            self.main_window.Log_Lw.Waring(f"获取歌词结果为空 {error_str}")
         self.search_result_map.clear()
         self.lrc_result_map.clear()
         self.setColumnCount(2)
@@ -49,20 +50,28 @@ class LrcTableWidget(QTableWidget):
             self.setItem(cnt, 1, it2)
             self.search_result_map[cnt] = result
             cnt += 1
-            
+        self.main_window.Log_Lw.Info(f"获取到{str(len(result_list))}条结果")
+        
     def lrcResult(self, error_str, lrc, music_id, reason):
         if (error_str != ""):
-            print (f"获取歌词失败 {error_str}")
+            self.main_window.Log_Lw.Waring (f"获取歌词失败 {error_str}")
+        self.main_window.Log_Lw.Debug(f"获取歌词成功 {music_id}")
         self.lrc_result_map[music_id] = lrc
         if reason == 1:
+            if len(lrc) == 0:
+                self.main_window.Log_Lw.Waring (f"歌词长度为0")
             self.main_window.Lrc_Te.setText(lrc)
         elif reason == 2:
             lrc_name = os.path.splitext(self.music_file_name)[0]
             file_name, selected_filter = QFileDialog.getSaveFileName(self, "保存为：", lrc_name, "歌词文件 (*.lrc)")
-            print ((file_name, selected_filter))
             if len(file_name) != 0:
-                with open(file_name, "w") as f:
-                    f.write(lrc)
+                try:
+                    with open(file_name, "w") as f:
+                        f.write(lrc)
+                except Exception as e:
+                    self.main_window.Log_Lw.Error(f"保存歌词错误 {file_name}")
+                    return
+                self.main_window.Log_Lw.Info(f"写入歌词到 {file_name}")
 
     def getLrc(self, reason):
         current_source = self.main_window.Source_Cb.currentText()
@@ -80,7 +89,7 @@ class LrcTableWidget(QTableWidget):
     def rightMenuShow(self, pos):
         popMenu = QMenu()
         item = popMenu.addAction(u'左侧显示歌词')
-        item2 = popMenu.addAction(u'另存为歌词')
+        item2 = popMenu.addAction(u'另存为lrc歌词')
         action = popMenu.exec(QtGui.QCursor.pos())
         if action == item:
             self.getLrc(1)

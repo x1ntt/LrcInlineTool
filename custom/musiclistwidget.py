@@ -136,10 +136,10 @@ class MusicListWidget(QtWidgets.QListWidget):
     def clickedItem(self, item):
         fullname = self.music_list_man.getFullName(item.text())
         if fullname != "":
-            # try:
-            self.loadInfo(fullname)
-            # except Exception as e:
-                # self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
+            try:
+                self.loadInfo(fullname)
+            except Exception as e:
+                self.main_window.Log_Lw.Error("载入文件失败：" + str(e))
             
         else:
             self.main_window.Log_Lw.Debug(item.text())

@@ -22,6 +22,7 @@ class LogListWidget(QtWidgets.QListWidget):
         self.insertItem(0, item)
         
     def Debug(self, log):
+        return
         item = QtWidgets.QListWidgetItem(log)
         item.setBackground(QtGui.QColor(220,220,220))
         self.insertItem(0, item)
