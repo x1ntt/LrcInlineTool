@@ -52,22 +52,26 @@ class LrcTableWidget(QTableWidget):
             cnt += 1
         self.main_window.Log_Lw.Info(f"获取到{str(len(result_list))}条结果")
         
-    def lrcResult(self, error_str, lrc, music_id, reason):
+    def lrcResult(self, error_str, lrcs, music_id, reason):
         if (error_str != ""):
             self.main_window.Log_Lw.Waring (f"获取歌词失败 {error_str}")
         self.main_window.Log_Lw.Debug(f"获取歌词成功 {music_id}")
-        self.lrc_result_map[music_id] = lrc
+        self.lrc_result_map[music_id] = lrcs
+        self.current_music_id = music_id
         if reason == 1:
-            if len(lrc) == 0:
-                self.main_window.Log_Lw.Waring (f"歌词长度为0")
-            self.main_window.Lrc_Te.setText(lrc)
+            self.main_window.lang_comboBox.clear()
+            for k in lrcs.keys():
+                self.main_window.lang_comboBox.addItem(k)
+            if len(lrcs.keys()):
+                self.main_window.lang_comboBox.setCurrentIndex(0)
+
         elif reason == 2:
             lrc_name = os.path.splitext(self.music_file_name)[0]
             file_name, selected_filter = QFileDialog.getSaveFileName(self, "保存为：", lrc_name, "歌词文件 (*.lrc)")
             if len(file_name) != 0:
                 try:
                     with open(file_name, "w") as f:
-                        f.write(lrc)
+                        f.write(lrcs["lyric"])
                 except Exception as e:
                     self.main_window.Log_Lw.Error(f"保存歌词错误 {file_name}")
                     return
@@ -81,8 +85,8 @@ class LrcTableWidget(QTableWidget):
             return 
         mid = self.search_result_map[self.currentRow()].music_id
         if mid in self.lrc_result_map.keys():
-            cur_lrc = self.lrc_result_map[music_id]
-            lrcResult("", cur_lrc, mid, reason)
+            cur_lrc = self.lrc_result_map[mid]
+            self.lrcResult("", cur_lrc, mid, reason)
         else:
             source.getLrc(str(mid), reason)
         
@@ -98,3 +102,10 @@ class LrcTableWidget(QTableWidget):
         
     def SetMainWindow(self, main_window):
         self.main_window = main_window
+    
+    def updateLrc(self, pos):
+        cur_lrc_type = self.main_window.lang_comboBox.currentText()
+        if len(cur_lrc_type) == 0:
+            return
+        cur_lrc = self.lrc_result_map[self.current_music_id][cur_lrc_type]
+        self.main_window.Lrc_Te.setText(cur_lrc)

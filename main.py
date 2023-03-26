@@ -13,12 +13,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.Remove_Btn.clicked.connect(self.musicList.removeMusic)
         self.Save_Btn.clicked.connect(self.musicList.saveInfo)
         self.SearchLRC_Btn.clicked.connect(self.LrcList_Tw.searchLrc)
+        self.lang_comboBox.currentIndexChanged.connect(self.LrcList_Tw.updateLrc)
         
         self.Log_Lw.SetMainWindow(self)
         self.musicList.SetMainWindow(self)
         self.LrcList_Tw.SetMainWindow(self)
         
-        self.LrcList_Tw.addSource()
+        self.LrcList_Tw.addSource()     # 如果新增加了源，需要在这里面增加代码
         
         self.show()
         

@@ -68,7 +68,10 @@ class NeteaseSource(SourceBase):
         res = json.loads(json_str)
         if res["code"] != 200:
             raise f"api返回的状态码不正确 {res['code']}"
-        return res["lrc"]["lyric"]
+        lrcs = {}   # 保存所有的歌词
+        lrcs["lyric"] = res["lrc"]["lyric"]             # 歌词
+        lrcs["tlyric"] = res["tlyric"]["lyric"]         # 歌词翻译
+        return lrcs
         
     def httpFinishedLrc(self, reply):
         bty = ""
