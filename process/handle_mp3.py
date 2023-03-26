@@ -23,7 +23,6 @@ class Handle_mp3:
         
         if len(self.audio.getall("USLT")) > 0:
             info_dict['lyrics'] = self.audio.getall("USLT")[0].text
-            print (self.audio.getall("USLT"))
         try:
             info_dict['time_long'] = strftime("%H:%M:%S", gmtime(int(self.audio2.info.length)))
         except Exception as e:
@@ -39,8 +38,7 @@ class Handle_mp3:
         if "alnum_name" in info_dict:
             self.audio["TALB"] = TALB(encoding=3, text=info_dict['alnum_name'])
         if "lyrics" in info_dict:
-            self.audio.delall("USLT")
-            self.audio["USLT"] = USLT(encoding=3, lang='eng', text=info_dict['lyrics'])
+            self.audio.setall("USLT", [USLT(encoding=3, lang='eng', text=info_dict['lyrics'])])
             
     def save(self):
         self.audio.save()

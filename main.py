@@ -14,7 +14,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.Save_Btn.clicked.connect(self.musicList.saveInfo)
         self.SearchLRC_Btn.clicked.connect(self.LrcList_Tw.searchLrc)
         self.lang_comboBox.currentIndexChanged.connect(self.LrcList_Tw.updateLrc)
-        
+        self.Merge_Lrc_Btn.clicked.connect(self.LrcList_Tw.mergeLrc)
+
         self.Log_Lw.SetMainWindow(self)
         self.musicList.SetMainWindow(self)
         self.LrcList_Tw.SetMainWindow(self)

@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QTableWidget,QTableWidgetItem,QMenu,QAction
 import os
+import re
 
 from lrcsource.sourcenetease import NeteaseSource
 from lrcsource.sourcebase import SearchRequest
@@ -109,3 +110,33 @@ class LrcTableWidget(QTableWidget):
             return
         cur_lrc = self.lrc_result_map[self.current_music_id][cur_lrc_type]
         self.main_window.Lrc_Te.setText(cur_lrc)
+    
+    def mergeLrc(self):
+        '''
+            将会合并原文和翻译，仅依据lrc文件里面的时间
+        '''
+        try:
+            lrcs = self.lrc_result_map[self.current_music_id]
+        except Exception:
+            return
+
+        if "lyric" not in lrcs.keys():
+            return
+        if "tlyric" not in lrcs.keys():
+            return
+        lyric = lrcs["lyric"]
+        tlyric = lrcs["tlyric"]
+        lyric_list = lyric.split('\n')
+        tlyric_list = tlyric.split('\n')
+
+        target = []
+        for str in lyric_list:
+            target.append(str)
+            res = re.findall("^\[.*\]", str)
+            if len(res):
+                for s in tlyric_list:
+                    if res[0] in s:
+                        target.append(s)
+                        break
+        target_str = "\n".join(target)
+        self.main_window.Lrc_Te.setText(target_str)
