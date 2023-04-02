@@ -58,3 +58,8 @@ mutagen.File('1.mp3').keys() 	# 返回所有的标签名字
 mutagen.File('1.mp3')['TIT2']	# 访问标签对应的数据
 ```
 
+
+
+## TODO
+
++ 优化歌词搜索，过滤歌手
