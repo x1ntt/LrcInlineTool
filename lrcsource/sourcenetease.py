@@ -1,5 +1,6 @@
 from lrcsource.sourcebase import SourceBase, SearchRequest, SearchResponseItem
 
+from urllib.parse import quote_plus 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkAccessManager, QNetworkRequest
 from PyQt5.QtCore import QUrl
 import json
@@ -13,7 +14,8 @@ class NeteaseSource(SourceBase):
         self.music_name = search_request.music_name
         self.art_name = search_request.art_name
         
-        url = f"http://music.163.com/api/search/get/web?s={self.music_name}&type=1&offset=0&total=true&limit={50}"
+        url = f"http://music.163.com/api/search/get/web?s={quote_plus(str(self.music_name + self.art_name))}&type=1&offset=0&total=true&limit={100}"
+        print (url)
         self.req = QNetworkRequest(QUrl(url))
         self.nam = QNetworkAccessManager()
         self.nam.finished.connect(self.httpFinishedResultList)
@@ -32,7 +34,7 @@ class NeteaseSource(SourceBase):
             art_list = []
             for art in song["artists"]:
                 art_list.append(art["name"])
-            res_list.append(SearchResponseItem(song["id"], song["name"], art_list))
+            res_list.append(SearchResponseItem(song["id"], song["name"], song["album"]["name"], art_list))
         return res_list
         
     def httpFinishedResultList(self, reply):
@@ -66,17 +68,22 @@ class NeteaseSource(SourceBase):
         if len(json_str) == 0:
             raise "返回结果为空"
         res = json.loads(json_str)
+        print (res)
         if res["code"] != 200:
             raise f"api返回的状态码不正确 {res['code']}"
         lrcs = {}   # 保存所有的歌词
-        lrcs["lyric"] = res["lrc"]["lyric"]             # 歌词
-        lrcs["tlyric"] = res["tlyric"]["lyric"]         # 歌词翻译
+        try:
+            lrcs["lyric"] = res["lrc"]["lyric"]             # 歌词
+            lrcs["tlyric"] = res["tlyric"]["lyric"]         # 歌词翻译
+        except:
+            pass    # 纯音乐没有tlyric
         return lrcs
         
     def httpFinishedLrc(self, reply):
         bty = ""
         error_str = ""
         json_str = ""
+        res = {}
         if reply.error() == QNetworkReply.NetworkError.NoError:
             bty = reply.readAll()
             json_str = str(bty, 'utf-8')

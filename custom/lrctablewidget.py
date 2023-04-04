@@ -29,7 +29,7 @@ class LrcTableWidget(QTableWidget):
             return 
         current_source = self.main_window.Source_Cb.currentText()
         source = self.source_map[current_source]
-        search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), "")
+        search_request = SearchRequest(self.main_window.LrcMusicName_Le.text(), self.main_window.LrcArt_Le.text())
         source.SetCallbackObject(self)
         source.getResultList(search_request)
         self.main_window.Log_Lw.Info(f"通过 {source.source_name}, 获取{self.main_window.LrcMusicName_Le.text()}歌词")
@@ -41,7 +41,7 @@ class LrcTableWidget(QTableWidget):
             self.main_window.Log_Lw.Waring(f"获取歌词结果为空 {error_str}")
         self.search_result_map.clear()
         self.lrc_result_map.clear()
-        self.setColumnCount(2)
+        self.setColumnCount(3)
         self.setRowCount(len(result_list))
         cnt = 0
         for result in result_list:
@@ -49,6 +49,8 @@ class LrcTableWidget(QTableWidget):
             self.setItem(cnt, 0, it)
             it2 = QTableWidgetItem("/".join(result.art))
             self.setItem(cnt, 1, it2)
+            it3 = QTableWidgetItem(result.album_name)
+            self.setItem(cnt, 2, it3)
             self.search_result_map[cnt] = result
             cnt += 1
         self.main_window.Log_Lw.Info(f"获取到{str(len(result_list))}条结果")
@@ -56,9 +58,11 @@ class LrcTableWidget(QTableWidget):
     def lrcResult(self, error_str, lrcs, music_id, reason):
         if (error_str != ""):
             self.main_window.Log_Lw.Waring (f"获取歌词失败 {error_str}")
+            return
         self.main_window.Log_Lw.Debug(f"获取歌词成功 {music_id}")
         self.lrc_result_map[music_id] = lrcs
         self.current_music_id = music_id
+
         if reason == 1:
             self.main_window.lang_comboBox.clear()
             for k in lrcs.keys():

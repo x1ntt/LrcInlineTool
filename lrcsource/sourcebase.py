@@ -7,13 +7,14 @@ class SearchRequest:
 
 # 传递搜索结果 所有源的实现统一使用这两个结构
 class SearchResponseItem:
-    def __init__(self, music_id, music_name, art_list):
+    def __init__(self, music_id, music_name, album_name, art_list):
         self.music_id = music_id
         self.music_name = music_name
+        self.album_name = album_name
         self.art = art_list
         
     def print(self):
-        print (f"{self.music_id}, {self.music_name}", end="")
+        print (f"{self.music_id}, {self.music_name}, {self.album_name}", end="")
         print (self.art)
 
 class SourceBase:
