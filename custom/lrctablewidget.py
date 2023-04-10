@@ -115,6 +115,20 @@ class LrcTableWidget(QTableWidget):
         cur_lrc = self.lrc_result_map[self.current_music_id][cur_lrc_type]
         self.main_window.Lrc_Te.setText(cur_lrc)
     
+    # 翻译歌词加上最小单位时间，用于兼容支持多行显示的播放器，实现双语歌词 （目前没有正确实现）
+    # 思路来自 https://github.com/jitwxs/163MusicLyrics/issues/171 感谢 @daoxi
+    def decmintime(self, lrcstr):
+        idx = 0;
+        for v in lrcstr:
+            idx = idx - 1
+            s = lrcstr[idx]
+            if s.isdigit() and s != '0':
+                i = int(s) 
+                newstr = list(lrcstr)
+                newstr[idx] = str((i - 1))
+                return "".join(newstr)
+        return lrcstr
+
     def mergeLrc(self):
         '''
             将会合并原文和翻译，仅依据lrc文件里面的时间
@@ -140,7 +154,7 @@ class LrcTableWidget(QTableWidget):
             if len(res):
                 for s in tlyric_list:
                     if res[0] in s:
-                        target.append(s)
+                        target.append(self.decmintime(s))
                         break
         target_str = "\n".join(target)
         self.main_window.Lrc_Te.setText(target_str)

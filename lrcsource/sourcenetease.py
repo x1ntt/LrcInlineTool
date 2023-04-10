@@ -68,7 +68,6 @@ class NeteaseSource(SourceBase):
         if len(json_str) == 0:
             raise "返回结果为空"
         res = json.loads(json_str)
-        print (res)
         if res["code"] != 200:
             raise f"api返回的状态码不正确 {res['code']}"
         lrcs = {}   # 保存所有的歌词
