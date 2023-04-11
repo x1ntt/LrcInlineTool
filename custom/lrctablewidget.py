@@ -1,5 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog,QAbstractItemView,QMenu,QTableWidget,QTableWidgetItem,QMenu,QAction
+from utils.timetools import sub_min_unit_from_lrc_line, get_time_from_lrc_line, replace_time, match_translate_line
 import os
 import re
 
@@ -114,20 +115,6 @@ class LrcTableWidget(QTableWidget):
             return
         cur_lrc = self.lrc_result_map[self.current_music_id][cur_lrc_type]
         self.main_window.Lrc_Te.setText(cur_lrc)
-    
-    # 翻译歌词加上最小单位时间，用于兼容支持多行显示的播放器，实现双语歌词 （目前没有正确实现）
-    # 思路来自 https://github.com/jitwxs/163MusicLyrics/issues/171 感谢 @daoxi
-    def decmintime(self, lrcstr):
-        idx = 0;
-        for v in lrcstr:
-            idx = idx - 1
-            s = lrcstr[idx]
-            if s.isdigit() and s != '0':
-                i = int(s) 
-                newstr = list(lrcstr)
-                newstr[idx] = str((i - 1))
-                return "".join(newstr)
-        return lrcstr
 
     def mergeLrc(self):
         '''
@@ -148,13 +135,15 @@ class LrcTableWidget(QTableWidget):
         tlyric_list = tlyric.split('\n')
 
         target = []
-        for str in lyric_list:
-            target.append(str)
-            res = re.findall("^\[.*\]", str)
-            if len(res):
-                for s in tlyric_list:
-                    if res[0] in s:
-                        target.append(self.decmintime(s))
-                        break
+        for i in range(0, len(lyric_list)):
+            target.append(lyric_list[i])
+            if i+1 < len(lyric_list):
+                next_time = get_time_from_lrc_line(lyric_list[i+1])
+            else:
+                next_time = "[99:99.99]"
+            tline = match_translate_line(tlyric_list, get_time_from_lrc_line(lyric_list[i]))
+            tline = replace_time(tline, sub_min_unit_from_lrc_line(next_time))
+            target.append(tline)
+            
         target_str = "\n".join(target)
         self.main_window.Lrc_Te.setText(target_str)
