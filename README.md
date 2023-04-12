@@ -1,10 +1,11 @@
 # LrcInlineTool
 
-
+![image-20230412111733164](docs/img/image-20230412111733164.png)
 
 # 运行
 
-目前还不是正式版，先不准备打包成`exe`
++ 直接运行`main.py`文件
++ 运行现成的发布版本
 
 ## 依赖
 
@@ -19,6 +20,16 @@
   如果想要修改`.ui文件`则需要安装下面的工具，使用`designer.exe`编辑`ui文件`
 
 + `pip3 install PyQt5-tools`
+
+## 打包成exe
+
+*windows*
+
++ `pip install pyinstaller`
++ `cd`到项目目录
++ `mkdir dist`
++ `pyinstaller -w -F main.py --distpath dist  --specpath dist`
++ 应该会有一个单文件在`dist`目录 （`qt`打包出来的是真的大）
 
 ## 重新生成界面代码
 
@@ -62,8 +73,8 @@ mutagen.File('1.mp3')['TIT2']	# 访问标签对应的数据
 
 ## TODO
 
-- [x] 优化歌词搜索，防止找不到翻唱
+- [ ] 优化歌词搜索，防止找不到翻唱
 - [x] 歌词搜索如果出现`&`则会截断
 - [ ] 支持递归查找歌曲
-- [ ] 新的歌词格式 
+- [x] 新的歌词格式 
 - [x] 歌词列表显示专辑
